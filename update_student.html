@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student - Student Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="add_student.html">Add Student</a></li>
+            <li><a href="view_students.html">View Students</a></li>
+            <li><a href="update_student.html">Update Student</a></li>
+            <li><a href="delete_student.html">Delete Student</a></li>
+        </ul>
+    </nav>
+    <h1>Update Student</h1>
+    <form id="updateStudentForm">
+        <label for="studentId">Student ID:</label>
+        <input type="number" id="studentId" required>
+        <button type="button" onclick="loadStudent()">Load Student</button>
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" required>
+        
+        <label for="grade">Grade:</label>
+        <input type="text" id="grade" required>
+        
+        <button type="submit">Update Student</button>
+    </form>
+    <script>
+        function loadStudent() {
+            const id = parseInt(document.getElementById('studentId').value);
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = students.find(s => s.id === id);
+            if (student) {
+                document.getElementById('name').value = student.name;
+                document.getElementById('age').value = student.age;
+                document.getElementById('grade').value = student.grade;
+            } else {
+                alert('Student not found');
+            }
+        }
+        
+        document.getElementById('updateStudentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('studentId').value);
+            const name = document.getElementById('name').value;
+            const age = parseInt(document.getElementById('age').value);
+            const grade = document.getElementById('grade').value;
+            
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            const index = students.findIndex(s => s.id === id);
+            if (index !== -1) {
+                students[index] = { id, name, age, grade };
+                localStorage.setItem('students', JSON.stringify(students));
+                alert('Student updated successfully!');
+                document.getElementById('updateStudentForm').reset();
+            } else {
+                alert('Student not found');
+            }
+        });
+    </script>
+</body>
+</html>
